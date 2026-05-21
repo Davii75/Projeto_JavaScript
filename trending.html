@@ -1,11 +1,62 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StreamFlix — Em Alta</title>
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    
+
+<nav>
+  <a href="index.html" class="nav-logo">STREAMFLIX</a>
+  <div class="nav-links">
+    <a href="index.html">Início</a>
+    <a href="explorar.html">Explorar</a>
+    <a href="trending.html">Em Alta</a>
+    <a href="sobre.html">Sobre</a>
+  </div>
+  <div class="nav-right" id="nav-right"></div>
+</nav>
+
+<main class="page">
+  <div class="trending-page">
+    <h1>Em Alta</h1>
+    <p class="subtitle">Os conteúdos mais bem avaliados do catálogo</p>
+
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:20px">
+      <div class="nav-search" style="max-width:280px;flex:1">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="trending-search" placeholder="Buscar por título ou gênero...">
+      </div>
+    </div>
+
+    <div class="filter-bar">
+      <button class="filter-chip active" data-filter="todos">Todos</button>
+      <button class="filter-chip" data-filter="serie">Séries</button>
+      <button class="filter-chip" data-filter="filme">Filmes</button>
+      <button class="filter-chip" data-filter="anime">Animes</button>
+      <button class="filter-chip" data-filter="doc">Documentários</button>
+    </div>
+
+    <div class="cards-grid" id="trending-grid"></div>
+
+    <div style="margin-top:40px;padding:20px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <h3 style="font-size:15px;font-weight:700">Traversal do DOM</h3>
+        <button class="btn btn-ghost btn-sm" id="traversal-btn">Inspecionar Cards</button>
+      </div>
+      <p style="font-size:13px;color:var(--text-secondary);margin-bottom:12px">
+        Clique em "Inspecionar" para fazer traversal nos cards do grid e ler seus atributos via DOM.
+      </p>
+      <div id="traversal-demo" class="hidden">
+        <div id="traversal-list" class="dom-list"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="js/config.js"></script>
+<script src="js/trending.js"></script>
 </body>
 </html>

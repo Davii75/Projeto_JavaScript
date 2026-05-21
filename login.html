@@ -1,11 +1,77 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StreamFlix — Login</title>
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    
+
+<nav>
+  <a href="index.html" class="nav-logo">STREAMFLIX</a>
+  <div class="nav-links">
+    <a href="index.html">Início</a>
+    <a href="explorar.html">Explorar</a>
+    <a href="trending.html">Em Alta</a>
+    <a href="sobre.html">Sobre</a>
+  </div>
+  <div class="nav-right" id="nav-right"></div>
+</nav>
+
+<div class="login-page">
+  <div class="login-card">
+    <div class="login-logo">STREAMFLIX</div>
+    <p class="login-subtitle">Acesse sua conta para continuar</p>
+
+    <div id="login-form">
+      <div class="form-group">
+        <label class="form-label" for="login-email">E-mail</label>
+        <input
+          type="email"
+          id="login-email"
+          class="form-input"
+          placeholder="seu@email.com"
+          autocomplete="email"
+        >
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="login-pass">Senha</label>
+        <div style="position:relative">
+          <input
+            type="password"
+            id="login-pass"
+            class="form-input"
+            placeholder="••••••••"
+            autocomplete="current-password"
+            style="padding-right:44px"
+          >
+          <button id="toggle-pass" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;font-size:16px;color:var(--text-muted);" type="button">👁</button>
+        </div>
+      </div>
+
+      <p id="login-error" class="error-msg hidden"></p>
+
+      <button id="login-submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px;">Entrar</button>
+    </div>
+
+    <div style="margin-top:28px;padding-top:20px;border-top:1px solid var(--border);">
+      <p style="font-size:12px;color:var(--text-muted);text-align:center;margin-bottom:12px;">Credenciais de demonstração:</p>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-ghost btn-sm demo-hint" data-type="admin" style="flex:1;justify-content:center;font-size:12px;">
+          ★ Admin
+        </button>
+        <button class="btn btn-ghost btn-sm demo-hint" data-type="demo" style="flex:1;justify-content:center;font-size:12px;">
+          👤 Demo
+        </button>
+      </div>
+      <p style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:8px;">Clique para preencher automaticamente</p>
+    </div>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/login.js"></script>
 </body>
 </html>

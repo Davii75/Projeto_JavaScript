@@ -1,11 +1,86 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StreamFlix — Início</title>
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    
+
+<nav>
+  <a href="index.html" class="nav-logo">STREAMFLIX</a>
+  <div class="nav-links">
+    <a href="index.html">Início</a>
+    <a href="explorar.html">Explorar</a>
+    <a href="trending.html">Em Alta</a>
+    <a href="sobre.html">Sobre</a>
+  </div>
+  <div class="nav-right" id="nav-right">
+    <a href="login.html" class="btn btn-primary btn-sm">Entrar</a>
+  </div>
+</nav>
+
+<main class="page">
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div id="hero-bg-img" class="hero-bg-img"></div>
+    <div class="hero-gradient"></div>
+    <div class="hero-content" id="hero-content">
+      <div class="hero-badge" id="hero-badge">Série</div>
+      <h1 class="hero-title" id="hero-title">Carregando...</h1>
+      <p class="hero-desc" id="hero-desc"></p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" id="hero-play">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+          Assistir
+        </button>
+        <button class="btn btn-ghost" id="hero-fav">+ Lista</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <h2 class="section-title">Continuar Assistindo</h2>
+      <a href="explorar.html" class="section-more">Ver tudo →</a>
+    </div>
+    <div class="cards-row" id="continue-row"></div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <h2 class="section-title">Séries</h2>
+      <a href="explorar.html" class="section-more">Ver tudo →</a>
+    </div>
+    <div class="cards-row" id="series-row"></div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <h2 class="section-title">Filmes</h2>
+      <a href="explorar.html" class="section-more">Ver tudo →</a>
+    </div>
+    <div class="cards-row" id="filmes-row"></div>
+  </section>
+
+  <section class="section" style="padding-bottom: 60px;">
+    <div class="section-header">
+      <h2 class="section-title">Animes & Docs</h2>
+      <a href="explorar.html" class="section-more">Ver tudo →</a>
+    </div>
+    <div class="cards-row" id="extras-row"></div>
+  </section>
+</main>
+
+<div id="admin-bar" class="admin-bar">
+  <strong>★ Modo Admin</strong>
+  <span>·</span>
+  <span>Gerencie o catálogo em</span>
+  <a href="config.html" class="btn btn-ghost btn-sm">Configurações</a>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/script.js"></script>
 </body>
 </html>

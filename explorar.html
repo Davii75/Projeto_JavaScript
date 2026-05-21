@@ -1,11 +1,77 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StreamFlix — Explorar</title>
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    
+
+<nav>
+  <a href="index.html" class="nav-logo">STREAMFLIX</a>
+  <div class="nav-links">
+    <a href="index.html">Início</a>
+    <a href="explorar.html">Explorar</a>
+    <a href="trending.html">Em Alta</a>
+    <a href="sobre.html">Sobre</a>
+  </div>
+  <div class="nav-right" id="nav-right"></div>
+</nav>
+
+<main class="page" style="padding-bottom:60px">
+  <div class="explorar-page">
+    <h1>Explorar</h1>
+    <p style="color:var(--text-secondary);font-size:14px;margin-bottom:28px">Navegue por gênero ou encontre algo novo</p>
+
+    <h2 style="font-size:16px;font-weight:700;margin-bottom:14px;color:var(--text-secondary)">Gêneros</h2>
+    <div class="genre-grid">
+      <div class="genre-card genre-acao" data-genre="Ação"><span>⚔ Ação</span></div>
+      <div class="genre-card genre-comedia" data-genre="Comédia"><span>😄 Comédia</span></div>
+      <div class="genre-card genre-drama" data-genre="Drama"><span>🎭 Drama</span></div>
+      <div class="genre-card genre-terror" data-genre="Terror"><span>👻 Terror</span></div>
+      <div class="genre-card genre-sci" data-genre="Sci-Fi"><span>🚀 Sci-Fi</span></div>
+      <div class="genre-card genre-romance" data-genre="Romance"><span>💕 Romance</span></div>
+      <div class="genre-card genre-anime" data-genre="Anime"><span>⛩ Anime</span></div>
+      <div class="genre-card genre-doc" data-genre="Documentário"><span>🎬 Doc</span></div>
+    </div>
+
+    <div id="fav-section" class="hidden" style="margin-bottom:40px">
+      <h2 style="font-size:16px;font-weight:700;margin-bottom:14px">❤ Minha Lista</h2>
+      <div class="cards-grid" id="fav-grid"></div>
+    </div>
+
+    <div>
+      <h2 style="font-size:16px;font-weight:700;margin-bottom:14px" id="explorar-results-title">Todo o Catálogo</h2>
+      <div class="cards-grid" id="explorar-results"></div>
+    </div>
+  </div>
+</main>
+
+<div class="modal-overlay" id="content-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title" id="modal-title">Título</h2>
+      <button class="modal-close" id="modal-close">✕</button>
+    </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px">
+      <span id="modal-type" style="font-size:13px;color:var(--accent);font-weight:600"></span>
+      <span style="color:var(--text-muted)">·</span>
+      <span id="modal-year" style="font-size:13px;color:var(--text-muted)"></span>
+      <span style="color:var(--text-muted)">·</span>
+      <span id="modal-rating" style="font-size:13px;color:#f5a623;font-weight:600"></span>
+      <span style="color:var(--text-muted)">·</span>
+      <span id="modal-genre" style="font-size:13px;color:var(--text-muted)"></span>
+    </div>
+    <p id="modal-desc" style="font-size:14px;color:var(--text-secondary);line-height:1.7;margin-bottom:24px"></p>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-primary" onclick="UI.showToast('▶ Reproduzindo...','info')">▶ Assistir</button>
+      <button class="btn btn-ghost" id="modal-fav-btn">+ Adicionar</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/explorar.js"></script>
 </body>
 </html>

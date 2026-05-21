@@ -1,11 +1,445 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StreamFlix — Configurações</title>
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    
+
+<nav>
+  <a href="index.html" class="nav-logo">STREAMFLIX</a>
+  <div class="nav-links">
+    <a href="index.html">Início</a>
+    <a href="explorar.html">Explorar</a>
+    <a href="trending.html">Em Alta</a>
+    <a href="sobre.html">Sobre</a>
+  </div>
+  <div class="nav-right" id="nav-right"></div>
+</nav>
+
+<main class="page" style="padding-bottom:60px">
+  <div class="config-page">
+    <div class="config-header">
+      <h1>Painel de Configurações</h1>
+      <p>Gerencie o catálogo e as configurações do StreamFlix</p>
+    </div>
+
+    <div id="admin-required" class="empty-state hidden">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <p>Acesso restrito. Faça login como administrador para gerenciar o catálogo.</p>
+      <a href="login.html" class="btn btn-primary" style="margin-top:8px">Fazer Login</a>
+    </div>
+
+    <div id="admin-panel">
+      <div class="config-section">
+        <div class="config-section-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="m8 21 4-4 4 4"/><path d="M12 17v4"/></svg>
+          Catálogo de Conteúdo
+          <span id="catalog-count" style="font-size:12px;font-weight:400;color:var(--text-muted);margin-left:auto"></span>
+          <button class="btn btn-primary btn-sm" id="btn-add-content" style="margin-left:12px">+ Adicionar</button>
+        </div>
+
+        <div class="config-table-wrap">
+          <table class="config-table">
+            <thead>
+              <tr>
+                <th>Título</th>
+                <th>Tipo</th>
+                <th>Gênero</th>
+                <th>Ano</th>
+                <th>Nota</th>
+                <th>Destaque</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="catalog-tbody"></tbody>
+          </table>
+        </div>
+
+        <div id="catalog-empty" class="empty-state hidden" style="padding:40px 0">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+          <p>Nenhum conteúdo no catálogo ainda. Adicione o primeiro!</p>
+        </div>
+      </div>
+
+      <div class="config-section">
+        <div class="config-section-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+          DOM — Demonstração Completa
+        </div>
+
+        <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px">Esta seção demonstra as quatro operações de manipulação do DOM: inserir, alterar, remover e ler elementos.</p>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
+          <button class="btn btn-ghost btn-sm" id="dom-insert">+ Inserir Item</button>
+          <button class="btn btn-ghost btn-sm" id="dom-alter">✎ Alterar Último</button>
+          <button class="btn btn-ghost btn-sm" id="dom-remove">✕ Remover Primeiro</button>
+          <button class="btn btn-ghost btn-sm" id="dom-read">👁 Ler Conteúdo</button>
+        </div>
+
+        <div class="dom-demo-box">
+          <h3>Lista DOM:</h3>
+          <div class="dom-list" id="dom-list">
+            <p style="color:var(--text-muted);font-size:13px">Clique nos botões acima para manipular esta lista.</p>
+          </div>
+          <div id="dom-read-output" style="margin-top:12px;font-size:12px;color:var(--text-secondary);font-family:monospace;background:var(--bg-primary);padding:10px;border-radius:6px;display:none"></div>
+        </div>
+      </div>
+
+      <div class="config-section">
+        <div class="config-section-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Atividade Recente
+        </div>
+        <div id="activity-list" style="display:flex;flex-direction:column;gap:8px"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="modal-overlay" id="content-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title" id="modal-form-title">Adicionar Conteúdo</h2>
+      <button class="modal-close" id="modal-close">✕</button>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Título *</label>
+      <input type="text" id="f-title" class="form-input" placeholder="Nome do conteúdo">
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Tipo *</label>
+        <select id="f-type" class="form-select">
+          <option value="">Selecione...</option>
+          <option value="serie">Série</option>
+          <option value="filme">Filme</option>
+          <option value="doc">Documentário</option>
+          <option value="anime">Anime</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Gênero *</label>
+        <select id="f-genre" class="form-select">
+          <option value="">Selecione...</option>
+          <option value="Ação">Ação</option>
+          <option value="Comédia">Comédia</option>
+          <option value="Drama">Drama</option>
+          <option value="Terror">Terror</option>
+          <option value="Sci-Fi">Sci-Fi</option>
+          <option value="Romance">Romance</option>
+          <option value="Anime">Anime</option>
+          <option value="Documentário">Documentário</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Ano *</label>
+        <input type="number" id="f-year" class="form-input" placeholder="2024" min="1900" max="2099">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Nota (0–10) *</label>
+        <input type="number" id="f-rating" class="form-input" placeholder="8.5" min="0" max="10" step="0.1">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">URL da Capa (opcional)</label>
+      <input type="url" id="f-thumb" class="form-input" placeholder="https://...">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Descrição</label>
+      <textarea id="f-desc" class="form-input" rows="3" placeholder="Breve sinopse..."></textarea>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+      <input type="checkbox" id="f-featured" style="accent-color:var(--accent);width:16px;height:16px;">
+      <label for="f-featured" style="font-size:13px;cursor:pointer">Definir como destaque na página inicial</label>
+    </div>
+
+    <p id="form-error" class="error-msg hidden"></p>
+
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px">
+      <button class="btn btn-ghost" id="modal-cancel">Cancelar</button>
+      <button class="btn btn-primary" id="modal-save">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const user = AppState.getUser();
+
+  if (!AppState.isAdmin()) {
+    document.getElementById('admin-required').classList.remove('hidden');
+    document.getElementById('admin-panel').classList.add('hidden');
+    return;
+  }
+
+  let editingId = null;
+  const activities = [];
+
+  renderTable();
+  setupDomDemo();
+  setupModal();
+
+  function renderTable() {
+    const catalog = AppState.getCatalog();
+    const tbody = document.getElementById('catalog-tbody');
+    const empty = document.getElementById('catalog-empty');
+    const count = document.getElementById('catalog-count');
+
+    count.textContent = `${catalog.length} item${catalog.length !== 1 ? 's' : ''}`;
+
+    if (!catalog.length) {
+      tbody.innerHTML = '';
+      empty.classList.remove('hidden');
+      return;
+    }
+
+    empty.classList.add('hidden');
+    const typeMap = { serie: 'Série', filme: 'Filme', doc: 'Doc', anime: 'Anime' };
+
+    tbody.innerHTML = catalog.map(item => `
+      <tr data-id="${item.id}">
+        <td>${item.title}</td>
+        <td>${typeMap[item.type] ?? item.type}</td>
+        <td>${item.genre}</td>
+        <td>${item.year}</td>
+        <td>★ ${item.rating}</td>
+        <td>${item.featured ? '<span style="color:var(--accent)">★ Sim</span>' : '—'}</td>
+        <td>
+          <div style="display:flex;gap:6px">
+            <button class="action-btn action-btn-edit" data-action="edit" data-id="${item.id}" title="Editar">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
+            <button class="action-btn action-btn-del" data-action="delete" data-id="${item.id}" title="Remover">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+
+    tbody.querySelectorAll('[data-action]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = parseInt(btn.dataset.id);
+        if (btn.dataset.action === 'edit') openEditModal(id);
+        else if (btn.dataset.action === 'delete') deleteItem(id);
+      });
+    });
+  }
+
+  function deleteItem(id) {
+    const item = AppState.getById(id);
+    if (!item) return;
+    if (!confirm(`Remover "${item.title}" do catálogo?`)) return;
+
+    const row = document.querySelector(`[data-id="${id}"]`);
+    if (row) {
+      row.style.opacity = '0';
+      row.style.transition = 'opacity 0.2s';
+      setTimeout(() => {
+        AppState.removeContent(id);
+        logActivity(`Removido: "${item.title}"`);
+        renderTable();
+        UI.showToast(`"${item.title}" removido.`, 'info');
+      }, 200);
+    }
+  }
+
+  function openEditModal(id) {
+    const item = AppState.getById(id);
+    if (!item) return;
+    editingId = id;
+
+    document.getElementById('modal-form-title').textContent = 'Editar Conteúdo';
+    document.getElementById('f-title').value = item.title;
+    document.getElementById('f-type').value = item.type;
+    document.getElementById('f-genre').value = item.genre;
+    document.getElementById('f-year').value = item.year;
+    document.getElementById('f-rating').value = item.rating;
+    document.getElementById('f-thumb').value = item.thumb ?? '';
+    document.getElementById('f-desc').value = item.desc ?? '';
+    document.getElementById('f-featured').checked = !!item.featured;
+    document.getElementById('form-error').classList.add('hidden');
+
+    document.getElementById('content-modal').classList.add('open');
+  }
+
+  function setupModal() {
+    document.getElementById('btn-add-content').addEventListener('click', () => {
+      editingId = null;
+      document.getElementById('modal-form-title').textContent = 'Adicionar Conteúdo';
+      document.getElementById('f-title').value = '';
+      document.getElementById('f-type').value = '';
+      document.getElementById('f-genre').value = '';
+      document.getElementById('f-year').value = new Date().getFullYear();
+      document.getElementById('f-rating').value = '';
+      document.getElementById('f-thumb').value = '';
+      document.getElementById('f-desc').value = '';
+      document.getElementById('f-featured').checked = false;
+      document.getElementById('form-error').classList.add('hidden');
+      document.getElementById('content-modal').classList.add('open');
+    });
+
+    const closeModal = () => {
+      document.getElementById('content-modal').classList.remove('open');
+      editingId = null;
+    };
+
+    document.getElementById('modal-close').addEventListener('click', closeModal);
+    document.getElementById('modal-cancel').addEventListener('click', closeModal);
+    document.getElementById('content-modal').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('content-modal')) closeModal();
+    });
+
+    document.getElementById('modal-save').addEventListener('click', () => {
+      const title  = document.getElementById('f-title').value.trim();
+      const type   = document.getElementById('f-type').value;
+      const genre  = document.getElementById('f-genre').value;
+      const year   = parseInt(document.getElementById('f-year').value);
+      const rating = parseFloat(document.getElementById('f-rating').value);
+      const thumb  = document.getElementById('f-thumb').value.trim();
+      const desc   = document.getElementById('f-desc').value.trim();
+      const featured = document.getElementById('f-featured').checked;
+      const errEl  = document.getElementById('form-error');
+
+      if (!title || !type || !genre || !year || isNaN(rating)) {
+        errEl.textContent = 'Preencha todos os campos obrigatórios.';
+        errEl.classList.remove('hidden');
+        return;
+      }
+
+      if (rating < 0 || rating > 10) {
+        errEl.textContent = 'A nota deve ser entre 0 e 10.';
+        errEl.classList.remove('hidden');
+        return;
+      }
+
+      errEl.classList.add('hidden');
+
+      if (featured) {
+        const catalog = AppState.getCatalog();
+        catalog.forEach(c => {
+          if (c.id !== editingId) AppState.updateContent(c.id, { featured: false });
+        });
+      }
+
+      const data = { title, type, genre, year, rating, thumb, desc, featured };
+
+      if (editingId) {
+        AppState.updateContent(editingId, data);
+        logActivity(`Editado: "${title}"`);
+        UI.showToast(`"${title}" atualizado!`, 'success');
+      } else {
+        AppState.addContent(data);
+        logActivity(`Adicionado: "${title}"`);
+        UI.showToast(`"${title}" adicionado ao catálogo!`, 'success');
+      }
+
+      closeModal();
+      renderTable();
+    });
+  }
+
+  function logActivity(msg) {
+    activities.unshift({ msg, time: new Date().toLocaleTimeString('pt-BR') });
+    if (activities.length > 8) activities.pop();
+    const list = document.getElementById('activity-list');
+    if (!list) return;
+
+    if (!activities.length) {
+      list.innerHTML = `<p style="color:var(--text-muted);font-size:13px">Nenhuma atividade ainda.</p>`;
+      return;
+    }
+
+    list.innerHTML = activities.map(a => `
+      <div class="dom-item">
+        <span>${a.msg}</span>
+        <span style="color:var(--text-muted);font-size:12px">${a.time}</span>
+      </div>
+    `).join('');
+  }
+
+  function setupDomDemo() {
+    const list = document.getElementById('dom-list');
+    let counter = 0;
+
+    const getItems = () => list.querySelectorAll('.dom-item');
+
+    document.getElementById('dom-insert').addEventListener('click', () => {
+      counter++;
+      const placeholder = list.querySelector('p');
+      if (placeholder) placeholder.remove();
+
+      const item = document.createElement('div');
+      item.className = 'dom-item';
+      item.dataset.num = counter;
+      item.innerHTML = `
+        <span>Item #${counter} — inserido às ${new Date().toLocaleTimeString('pt-BR')}</span>
+        <span style="color:var(--text-muted);font-size:12px">#${counter}</span>
+      `;
+      list.appendChild(item);
+      UI.showToast('Elemento inserido no DOM', 'success');
+    });
+
+    document.getElementById('dom-alter').addEventListener('click', () => {
+      const items = getItems();
+      if (!items.length) { UI.showToast('Nenhum item para alterar.', 'error'); return; }
+      const last = items[items.length - 1];
+      last.querySelector('span').textContent = `✎ Alterado em ${new Date().toLocaleTimeString('pt-BR')}`;
+      last.style.borderColor = 'var(--accent)';
+      UI.showToast('Último elemento alterado', 'info');
+    });
+
+    document.getElementById('dom-remove').addEventListener('click', () => {
+      const items = getItems();
+      if (!items.length) { UI.showToast('Nenhum item para remover.', 'error'); return; }
+      const first = items[0];
+      first.style.opacity = '0';
+      first.style.transition = 'opacity 0.2s';
+      setTimeout(() => {
+        first.remove();
+        if (!getItems().length) {
+          const p = document.createElement('p');
+          p.style.cssText = 'color:var(--text-muted);font-size:13px';
+          p.textContent = 'Lista vazia. Insira novos itens.';
+          list.appendChild(p);
+        }
+        UI.showToast('Primeiro elemento removido', 'info');
+      }, 200);
+    });
+
+    document.getElementById('dom-read').addEventListener('click', () => {
+      const items = getItems();
+      const output = document.getElementById('dom-read-output');
+      output.style.display = 'block';
+
+      if (!items.length) {
+        output.textContent = 'DOM: nenhum item na lista.';
+        UI.showToast('Lista vazia.', 'info');
+        return;
+      }
+
+      const data = Array.from(items).map((el, i) => {
+        const spans = el.querySelectorAll('span');
+        return `[${i}] texto="${spans[0]?.textContent ?? ''}" num="${el.dataset.num ?? '?'}"`;
+      });
+
+      output.textContent = `Leitura do DOM (${items.length} itens):\n${data.join('\n')}`;
+      UI.showToast(`${items.length} item${items.length !== 1 ? 's' : ''} lido${items.length !== 1 ? 's' : ''} do DOM`, 'success');
+    });
+  }
+});
+</script>
 </body>
 </html>

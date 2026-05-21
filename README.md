@@ -1,2 +1,0 @@
-# Projeto_JavaScript
-Projeto
