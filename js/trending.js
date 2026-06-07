@@ -1,15 +1,31 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   let activeFilter = 'todos';
+  let catalog = [];
   const grid = document.getElementById('trending-grid');
   const searchInput = document.getElementById('trending-search');
 
+  await loadCatalog();
   renderTrending();
   setupFilters();
   setupSearch();
   setupTraversal();
 
+  async function loadCatalog() {
+    if (typeof StreamFlixAPI !== 'undefined') {
+      catalog = await StreamFlixAPI.getFullCatalog();
+    } else {
+      catalog = AppState.getCatalog();
+    }
+
+    window.streamflixCatalog = catalog;
+  }
+
+  function findContentById(id) {
+    return catalog.find(item => Number(item.id) === Number(id));
+  }
+
   function getCatalogSorted() {
-    return [...AppState.getCatalog()].sort((a, b) => b.rating - a.rating);
+    return [...catalog].sort((a, b) => Number(b.rating) - Number(a.rating));
   }
 
   function renderTrending(filter = 'todos', query = '') {
@@ -36,8 +52,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     grid.querySelectorAll('.card').forEach(card => {
       card.addEventListener('click', () => {
-        const id = parseInt(card.dataset.id);
-        const item = AppState.getById(id);
+        const id = Number(card.dataset.id);
+        const item = findContentById(id);
         if (item) UI.showToast(`▶ ${item.title}`, 'info');
       });
     });
@@ -57,11 +73,33 @@ document.addEventListener('DOMContentLoaded', () => {
   function setupSearch() {
     if (!searchInput) return;
     let debounceTimer;
-    searchInput.addEventListener('input', () => {
+
+    searchInput.addEventListener('input', async () => {
       clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(() => {
-        renderTrending(activeFilter, searchInput.value);
-      }, 280);
+
+      debounceTimer = setTimeout(async () => {
+        const query = searchInput.value.trim();
+
+        if (query.length >= 3 && typeof StreamFlixAPI !== 'undefined' && StreamFlixAPI.hasApiKey()) {
+          const apiResults = await StreamFlixAPI.searchMovies(query);
+          const localResults = AppState.getCatalog().filter(item =>
+            item.title.toLowerCase().includes(query.toLowerCase()) ||
+            item.genre.toLowerCase().includes(query.toLowerCase())
+          );
+
+          const unique = new Map();
+          [...localResults, ...apiResults].forEach(item => unique.set(item.id, item));
+          catalog = Array.from(unique.values());
+          renderTrending(activeFilter, query);
+          return;
+        }
+
+        if (!query) {
+          await loadCatalog();
+        }
+
+        renderTrending(activeFilter, query);
+      }, 350);
     });
   }
 
@@ -91,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const titleEl = card.querySelector('.card-title');
         const title = titleEl ? titleEl.textContent : '—';
 
-        card.style.outline = rating >= 9 ? '2px solid var(--accent)' : '';
+        card.style.outline = rating >= 8 ? '2px solid var(--accent)' : '';
 
         highlighted.push({ pos: idx + 1, title, rating, siblings: sibCount });
       });
@@ -101,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
       list.innerHTML = highlighted.map(h =>
         `<div class="dom-item">
           <span>#${h.pos} — <strong>${h.title}</strong></span>
-          <span style="color:${h.rating >= 9 ? 'var(--accent)' : 'var(--text-muted)'}">★ ${h.rating}</span>
+          <span style="color:${h.rating >= 8 ? 'var(--accent)' : 'var(--text-muted)'}">★ ${h.rating}</span>
          </div>`
       ).join('');
 
