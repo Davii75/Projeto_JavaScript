@@ -80,7 +80,34 @@
   <a href="config.html" class="btn btn-ghost btn-sm">Configurações</a>
 </div>
 
+<div class="modal-overlay" id="content-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title" id="modal-title">Título</h2>
+      <button class="modal-close" id="modal-close" type="button">✕</button>
+    </div>
+
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px">
+      <span id="modal-type" style="font-size:13px;color:var(--accent);font-weight:600"></span>
+      <span style="color:var(--text-muted)">·</span>
+      <span id="modal-year" style="font-size:13px;color:var(--text-muted)"></span>
+      <span style="color:var(--text-muted)">·</span>
+      <span id="modal-rating" style="font-size:13px;color:#f5a623;font-weight:600"></span>
+      <span style="color:var(--text-muted)">·</span>
+      <span id="modal-genre" style="font-size:13px;color:var(--text-muted)"></span>
+    </div>
+
+    <p id="modal-desc" style="font-size:14px;color:var(--text-secondary);line-height:1.7;margin-bottom:24px"></p>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-primary" id="modal-watch-btn" type="button">▶ Assistir</button>
+      <button class="btn btn-ghost" id="modal-fav-btn" type="button">+ Adicionar</button>
+    </div>
+  </div>
+</div>
+
 <script src="js/config.js"></script>
+<script src="js/api.js"></script>
 <script src="js/script.js"></script>
 </body>
 </html>
