@@ -66,30 +66,6 @@
 
       <div class="config-section">
         <div class="config-section-title">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
-          DOM — Demonstração Completa
-        </div>
-
-        <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px">Esta seção demonstra as quatro operações de manipulação do DOM: inserir, alterar, remover e ler elementos.</p>
-
-        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
-          <button class="btn btn-ghost btn-sm" id="dom-insert">+ Inserir Item</button>
-          <button class="btn btn-ghost btn-sm" id="dom-alter">✎ Alterar Último</button>
-          <button class="btn btn-ghost btn-sm" id="dom-remove">✕ Remover Primeiro</button>
-          <button class="btn btn-ghost btn-sm" id="dom-read">👁 Ler Conteúdo</button>
-        </div>
-
-        <div class="dom-demo-box">
-          <h3>Lista DOM:</h3>
-          <div class="dom-list" id="dom-list">
-            <p style="color:var(--text-muted);font-size:13px">Clique nos botões acima para manipular esta lista.</p>
-          </div>
-          <div id="dom-read-output" style="margin-top:12px;font-size:12px;color:var(--text-secondary);font-family:monospace;background:var(--bg-primary);padding:10px;border-radius:6px;display:none"></div>
-        </div>
-      </div>
-
-      <div class="config-section">
-        <div class="config-section-title">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
           Atividade Recente
         </div>
@@ -188,7 +164,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const activities = [];
 
   renderTable();
-  setupDomDemo();
   setupModal();
 
   function renderTable() {
@@ -368,76 +343,6 @@ document.addEventListener('DOMContentLoaded', () => {
         <span style="color:var(--text-muted);font-size:12px">${a.time}</span>
       </div>
     `).join('');
-  }
-
-  function setupDomDemo() {
-    const list = document.getElementById('dom-list');
-    let counter = 0;
-
-    const getItems = () => list.querySelectorAll('.dom-item');
-
-    document.getElementById('dom-insert').addEventListener('click', () => {
-      counter++;
-      const placeholder = list.querySelector('p');
-      if (placeholder) placeholder.remove();
-
-      const item = document.createElement('div');
-      item.className = 'dom-item';
-      item.dataset.num = counter;
-      item.innerHTML = `
-        <span>Item #${counter} — inserido às ${new Date().toLocaleTimeString('pt-BR')}</span>
-        <span style="color:var(--text-muted);font-size:12px">#${counter}</span>
-      `;
-      list.appendChild(item);
-      UI.showToast('Elemento inserido no DOM', 'success');
-    });
-
-    document.getElementById('dom-alter').addEventListener('click', () => {
-      const items = getItems();
-      if (!items.length) { UI.showToast('Nenhum item para alterar.', 'error'); return; }
-      const last = items[items.length - 1];
-      last.querySelector('span').textContent = `✎ Alterado em ${new Date().toLocaleTimeString('pt-BR')}`;
-      last.style.borderColor = 'var(--accent)';
-      UI.showToast('Último elemento alterado', 'info');
-    });
-
-    document.getElementById('dom-remove').addEventListener('click', () => {
-      const items = getItems();
-      if (!items.length) { UI.showToast('Nenhum item para remover.', 'error'); return; }
-      const first = items[0];
-      first.style.opacity = '0';
-      first.style.transition = 'opacity 0.2s';
-      setTimeout(() => {
-        first.remove();
-        if (!getItems().length) {
-          const p = document.createElement('p');
-          p.style.cssText = 'color:var(--text-muted);font-size:13px';
-          p.textContent = 'Lista vazia. Insira novos itens.';
-          list.appendChild(p);
-        }
-        UI.showToast('Primeiro elemento removido', 'info');
-      }, 200);
-    });
-
-    document.getElementById('dom-read').addEventListener('click', () => {
-      const items = getItems();
-      const output = document.getElementById('dom-read-output');
-      output.style.display = 'block';
-
-      if (!items.length) {
-        output.textContent = 'DOM: nenhum item na lista.';
-        UI.showToast('Lista vazia.', 'info');
-        return;
-      }
-
-      const data = Array.from(items).map((el, i) => {
-        const spans = el.querySelectorAll('span');
-        return `[${i}] texto="${spans[0]?.textContent ?? ''}" num="${el.dataset.num ?? '?'}"`;
-      });
-
-      output.textContent = `Leitura do DOM (${items.length} itens):\n${data.join('\n')}`;
-      UI.showToast(`${items.length} item${items.length !== 1 ? 's' : ''} lido${items.length !== 1 ? 's' : ''} do DOM`, 'success');
-    });
   }
 });
 </script>
